@@ -1,5 +1,5 @@
 import { Prisma, Groups, User } from '@prisma/client';
-import prisma from '@database';
+import prisma from '../database';
 import { generateCustomId } from '../utils/customCode';
 
 class GroupRepository {
