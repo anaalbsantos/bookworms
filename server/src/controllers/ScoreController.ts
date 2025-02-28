@@ -3,7 +3,6 @@ import {
   GroupRepository,
   PostRepository,
   ScoreRepository,
-  UserRepository,
 } from '../repositories';
 
 class ScoreController {
@@ -60,16 +59,15 @@ class ScoreController {
           userId,
           now,
         );
-        let user;
         if (userMadeCheckin.length === 1) {
-          user = await ScoreRepository.addScore(userId, 1);
-        } else user = await UserRepository.findById(userId);
+          const user = await ScoreRepository.addScore(userId, 1);
 
-        res.locals = {
-          status: 200,
-          data: user,
-          message: 'Pontuação atualizada',
-        };
+          res.locals = {
+            status: 200,
+            data: user,
+            message: 'Pontuação atualizada',
+          };
+        }
       } else {
         // score by number of pages
         const post = await PostRepository.findById(postId);
@@ -114,7 +112,6 @@ class ScoreController {
         });
       }
 
-      let user;
       if (group.type === 'PAGES') {
         const post = await PostRepository.findById(postId);
         if (!post) {
@@ -125,12 +122,11 @@ class ScoreController {
         }
 
         await ScoreRepository.removeScore(userId, currentNumPages);
-        user = await ScoreRepository.addScore(userId, newNumPages);
-      } else user = await UserRepository.findById(userId);
+        await ScoreRepository.addScore(userId, newNumPages);
+      }
 
       res.locals = {
         status: 200,
-        data: user,
         message: 'Pontuação atualizada',
       };
 
@@ -165,7 +161,7 @@ class ScoreController {
           userId,
           now,
         );
-        if (userMadeCheckin.length === 0) {
+        if (!userMadeCheckin) {
           const user = await ScoreRepository.removeScore(userId, 1);
           res.locals = {
             status: 200,
