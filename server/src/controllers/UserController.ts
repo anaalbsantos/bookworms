@@ -1,14 +1,24 @@
 import { NextFunction, Request, Response } from 'express';
 import { ZodError } from 'zod';
 import { UserRepository } from '../repositories/index';
-import { UserDTO } from '../DTOs/index';
+import { UserDTO, updatedUserDTO } from '../DTOs/index';
+import uploadImage from '../services/cloudinaryService';
+import userRepository from 'src/repositories/userRepository';
 
 class UserController {
   async create(req: Request, res: Response) {
     try {
       // console.log('🔹 Recebendo requisição de cadastro:', req.body);
+      const data = {
+        name: req.body.name,
+        username: req.body.username,
+        email: req.body.email,
+        password: req.body.password,
+        bio: req.body.bio,
+        image: req.file
+      };
 
-      const parsedData = UserDTO.parse(req.body);
+      const parsedData = UserDTO.parse(data);
       // console.log('✅ Dados validados com sucesso:', parsedData);
 
       const existingUser = await UserRepository.findByUsernameOrEmail(
@@ -19,7 +29,16 @@ class UserController {
         return res.status(400).json({ message: 'O username já está em uso' });
       }
 
-      const newUser = await UserRepository.create(parsedData);
+      const imageUrl = await uploadImage(parsedData.image.path);
+
+      const newUser = await UserRepository.create({
+        name: parsedData.name,
+        username: parsedData.username,
+        email: parsedData.email,
+        password: parsedData.password,
+        bio: parsedData.bio,
+        image: imageUrl
+      });
       // console.log('🎉 Usuário criado com sucesso:', newUser);
 
       return res.status(201).json({
@@ -43,13 +62,38 @@ class UserController {
   async update(req: Request, res: Response) {
     try {
       const { userId } = req.params;
-      const parsedData = UserDTO.partial().parse(req.body);
-
-      const updatedUser = await UserRepository.update(userId, parsedData);
-      if (!updatedUser) {
+      const currentUser = await userRepository.findById(userId);
+      if (!currentUser) {
         return res.status(404).json({ message: 'Usuário não encontrado' });
       }
-      
+
+      const data = {
+        name: req.body.name,
+        username: req.body.username,
+        email: req.body.email,
+        password: req.body.password,
+        image: req.file ? req.file : undefined
+      };
+
+      const parsedData = updatedUserDTO.parse(data);
+
+      let imageUrl = currentUser.image;
+      if (parsedData.image) {
+        imageUrl = await uploadImage(parsedData.image.path);
+      }
+
+      const updatedUser = await UserRepository.update(userId, {
+        name: parsedData.name,
+        username: parsedData.username,
+        email: parsedData.email,
+        password: parsedData.password,
+        bio: parsedData.bio,
+        image: imageUrl
+      });
+      if (!updatedUser) {
+        return res.status(404).json({ message: 'Erro ao atualizar usuário' });
+      }
+
       return res.status(200).json({
         message: 'Perfil atualizado com sucesso',
         user: updatedUser,

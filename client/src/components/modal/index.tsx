@@ -1,14 +1,14 @@
 import React from 'react';
 import Image from 'next/image';
 import { Close } from 'assets';
-import { TextInput } from 'components/text-input'; // Importe o seu componente
+import { TextInput } from 'components/text-input'; 
 
 interface ModalProps {
   isOpen: boolean;
   onClose: () => void;
   title: string;
   subtitle?: string;
-  showTextBox?: boolean; // Propriedade para exibir o campo de texto
+  showTextBox?: boolean; 
   onConfirm: () => void;
   children?: React.ReactNode;
   confirmText: string;

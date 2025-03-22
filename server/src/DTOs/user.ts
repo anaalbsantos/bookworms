@@ -33,8 +33,17 @@ export const UserDTO = z.object({
     .min(6, { message: 'A senha deve conter no mínimo 6 caracteres' }),
 
   bio: z.string().optional(),
+
   image: z
-    .string()
-    .url({ message: 'A imagem deve ser uma URL válida' })
-    .optional(),
+    .object({
+      mimetype: z.string().refine(val => ['image/jpeg', 'image/png'].includes(val), {
+        message: 'the image must be a PNG OR JPG file'
+      }),
+      size: z.number().max(1024 * 1024, {
+        message: 'the image must be smaller then 1MB'
+      }),
+      path: z.string()
+    }),
 });
+
+export const updatedUserDTO = UserDTO.partial();

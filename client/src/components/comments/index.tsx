@@ -1,11 +1,13 @@
 import React, { useState } from "react";
-import { Edit3, Trash3, Woman2 } from "assets";
+import { Check, Edit3, Trash3, Woman2 } from "assets";
 import Image from "next/image";
 
 interface CommentInputProps {
   placeholder?: string;
   value?: string;
-  userId: string; // Identificador do usuário atual
+  userId: string; 
+  comments: Comment[]; 
+  setComments: React.Dispatch<React.SetStateAction<Comment[]>>; 
 }
 
 interface Comment {
@@ -19,43 +21,55 @@ interface Comment {
 export function CommentInput({
   placeholder = "Adicione um comentário...",
   value,
-  userId
+  userId,
+  comments,
+  setComments
 }: CommentInputProps) {
   const [comment, setComment] = useState(value || ""); 
-  const [comments, setComments] = useState<Comment[]>([
-    {
-      id: "1",
-      content: "Esse é meu comentário! Eu sou o autor.",
-      authorId: userId, // Usuário logado
-      authorName: "Usuário Atual",
-      authorPhoto: Woman2,
-    },
-    {
-      id: "2",
-      content: "Sou outra pessoa comentando, não deveria ver os ícones.",
-      authorId: "999", // Outro usuário
-      authorName: "Outro Usuário",
-      authorPhoto: Woman2,
-    },
-  ]); 
+  const [editingCommentId, setEditingCommentId] = useState<string | null>(null);
+  const [editedContent, setEditedContent] = useState<string>("");
+  
 
-  // Função que trata o envio do comentário
-  const handleKeyDown = (event: React.KeyboardEvent) => {
-    if (event.key === "Enter" && comment.trim() !== "") {
-      event.preventDefault(); 
+ 
+  const handleKeyDown = (event: React.KeyboardEvent<HTMLTextAreaElement>) => {
+  if (event.key === "Enter" && !event.shiftKey) {
+    event.preventDefault(); 
 
+    if (comment.trim() !== "") {
       const newComment = {
-        id: new Date().toISOString(), 
+        id: new Date().toISOString(),
         content: comment,
-        authorId: userId, 
-        authorName: "Usuário Atual", 
-        authorPhoto: Woman2 
+        authorId: userId,
+        authorName: "Usuário Atual",
+        authorPhoto: Woman2,
       };
 
-      setComments([...comments, newComment]);
+      setComments((prevComments) => [...prevComments, newComment]); // Atualiza o estado com o novo comentário
       setComment(""); // Limpa o campo de entrada
     }
+  }
+};
+
+  const handleDeleteComment = (id: string) => {
+    setComments(comments.filter((comment) => comment.id !== id));
   };
+
+  const handleEditComment = (id: string, content: string) => {
+    setEditingCommentId(id);
+    setEditedContent(content);
+  };
+
+
+  const handleSaveEdit = (id: string) => {
+    setComments(
+      comments.map((comment) =>
+        comment.id === id ? { ...comment, content: editedContent } : comment
+      )
+    );
+    setEditingCommentId(null);
+    setEditedContent("");
+  };
+
 
   return (
     <div className="flex-col items-center">
@@ -63,7 +77,7 @@ export function CommentInput({
         <textarea
           placeholder={placeholder}
           value={comment}
-          onChange={(e) => setComment(e.target.value)} // Atualiza o valor enquanto o comentário não foi enviado
+          onChange={(e) => setComment(e.target.value)} 
           onKeyDown={handleKeyDown}
           className="w-[351px] min-h-[67px] max-h-[200px] font-nunito text-graphiteGray border-none bg-gray rounded-[20px] p-2 resize-none overflow-y-auto text-[14px]"
         />
@@ -80,27 +94,47 @@ export function CommentInput({
               className="rounded-full mr-3 ml-2"  
             />
             <div className="flex flex-col justify-between flex-grow break-words overflow-hidden">
-              <span className="font-nunito text-[16px] font-semibold text-graphiteGray text-black">{comment.authorName}</span>
-              <p className="text-[14px] font-nunito text-graphiteGray">{comment.content}</p>
+              <span className="font-nunito text-[16px] font-semibold text-graphiteGray text-black">
+                {comment.authorName}
+              </span>
+              {editingCommentId === comment.id ? (
+                <textarea
+                  value={editedContent}
+                  onChange={(e) => setEditedContent(e.target.value)}
+                  className="text-[14px] font-nunito resize-none text-graphiteGray w-full bg-transparent border border-gray-300 rounded p-1 focus:outline-none focus:border-gray-500"
+                />
+              ) : (
+                <p className="text-[14px] font-nunito text-graphiteGray">
+                  {comment.content}
+                </p>
+              )}
             </div>
+
             {comment.authorId === userId && (
               <div className="flex ml-auto">
-                <button className="flex-shrink-0 w-8 h-8 p-1">
-                  <Image
-                    src={Trash3}
-                    alt="trash"
-                    width={24}  
-                    height={24} 
-                  />
-                </button>
-                <button className="flex-shrink-0 w-8 h-8 ">
-                  <Image
-                    src={Edit3}
-                    alt="edit"
-                    width={32} 
-                    height={32} 
-                  />
-                </button>
+                {editingCommentId === comment.id ? (
+                  <button
+                    onClick={() => handleSaveEdit(comment.id)}
+                    className="flex-shrink-0 w-8 h-8 text-white rounded-full p-1"
+                  >
+                    <Image src={Check} alt="check" width={24} height={24} />
+                  </button>
+                ) : (
+                  <>
+                    <button
+                      onClick={() => handleDeleteComment(comment.id)}
+                      className="flex-shrink-0 w-8 h-8 p-1"
+                    >
+                      <Image src={Trash3} alt="trash" width={24} height={24} />
+                    </button>
+                    <button
+                      onClick={() => handleEditComment(comment.id, comment.content)}
+                      className="flex-shrink-0 w-8 h-8"
+                    >
+                      <Image src={Edit3} alt="edit" width={32} height={32} />
+                    </button>
+                  </>
+                )}
               </div>
             )}
           </div>

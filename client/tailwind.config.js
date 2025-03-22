@@ -17,6 +17,9 @@ module.exports = {
       }
     },
     extend: {
+      fontFamily: {
+        nunito: ["Nunito", "sans-serif"],
+      },
       colors: {
         border: 'hsl(var(--border))',
         input: 'hsl(var(--input))',
@@ -52,6 +55,7 @@ module.exports = {
           foreground: 'hsl(var(--card-foreground))'
         },
         borrow: '#703E30',
+        borrowMiddle: '#3F3232',
         borrowDark: '#322828',
         gray: '#E4E4E7',
         pink: '#EE787C',
@@ -91,5 +95,5 @@ module.exports = {
       }
     }
   },
-  plugins: [require('tailwindcss-animate')]
+  plugins: [require('tailwindcss-animate'), require('tailwind-scrollbar')]
 };

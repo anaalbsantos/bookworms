@@ -86,7 +86,7 @@ defineFeature(feature, (test) => {
     });
   };
 
-  const thenUserwithScore = async (then: DefineStepFunction) => {
+  const thenJsonAnswer = async (then: DefineStepFunction) => {
     then(/^o sistema retorna um JSON com nome "(.*)"$/, async (nome) => {
       expect(response.body.name).toBe(nome);
     },
@@ -112,7 +112,7 @@ defineFeature(feature, (test) => {
     givenGroup(given);
     whenGETGroup(when);
     thenStatusResponse(then);
-    thenUserwithScore(and);
+    thenJsonAnswer(and);
   });
 
   test('Falha ao consultar informações de um grupo', ({ given, when, and, then }) => {

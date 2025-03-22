@@ -3,7 +3,7 @@ Feature: Feed de postagens de um grupo
     I want to acessar e interagir com o feed de postagens do grupo
     So that eu possa acompanhar as atualizações dos usuários sobre suas leituras
 
-    Scenario: Exibir postagens no feed
+        Scenario: Exibir postagens no feed
         Given Eu estou logado com o email "thais@gmail.com" e senha "password123"
         And Eu participo do grupo de código "GRP123"
         And O grupo possui 5 postagens cadastrada
@@ -73,4 +73,3 @@ Feature: Feed de postagens de um grupo
         When Eu chego ao final da página
         And Eu seleciono a opção "Próxima página"
         Then Eu vejo mais 10 postagens da página "2" no feed
-

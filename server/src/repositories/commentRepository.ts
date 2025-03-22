@@ -1,4 +1,4 @@
-import { Prisma, Comment, User, Post } from '@prisma/client';
+import { Prisma, Comment} from '@prisma/client';
 import prisma from '../database';
 
 class CommentRepository {
@@ -11,7 +11,7 @@ class CommentRepository {
     return newComment;
   }
 
-  //buscar um comentário pelo id dele
+  // buscar um comentário pelo id dele
   async findById(commentId: string): Promise<Comment | null> {
     const comment = await prisma.comment.findUnique({
       where: { id: commentId },
@@ -19,7 +19,7 @@ class CommentRepository {
     return comment;
   }
 
-  //buscar todos os comentários de um post
+  // buscar todos os comentários de um post
   async findByPostId(postId: string): Promise<Comment[]> {
     const comments = await prisma.comment.findMany({
       where: { postId },
@@ -28,7 +28,7 @@ class CommentRepository {
     return comments;
   }
 
-  //atualizar texto de um comentário:
+  // atualizar texto de um comentário:
 
   async update(commentId: string, text: string): Promise<Comment> {
     const updateComment = await prisma.comment.update({
@@ -38,7 +38,7 @@ class CommentRepository {
     return updateComment;
   }
 
-  //deletar comentário:
+  // deletar comentário:
 
   async delete(commentId: string): Promise<Comment> {
     const deletedComment = await prisma.comment.delete({
