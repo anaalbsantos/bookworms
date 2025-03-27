@@ -17,7 +17,10 @@
     "jsx": "preserve",
     "paths": {
       "@mui/styled-engine": ["./node_modules/@mui/styled-engine-sc"],
-      "@/*": ["./src/*"]
+      "@/*": ["./src/*"],
+      "@badeball/cypress-cucumber-preprocessor/*": [
+        "./node_modules/@badeball/cypress-cucumber-preprocessor/dist/subpath-entrypoints/*"
+      ]
     },
     "plugins": [
       {
@@ -30,8 +33,10 @@
     "**/*.ts",
     "**/*.tsx",
     ".next/types/**/*.ts",
-    "tailwind.config.js"
+    "tailwind.config.js",
+    "cypress.config.cjs"
   ],
   "exclude": ["node_modules"],
-  "types": ["@testing-library/jest-dom"]
+  "types": ["@testing-library/jest-dom"],
+  "references": [{ "path": "./tsconfig.node.json" }]
 }
