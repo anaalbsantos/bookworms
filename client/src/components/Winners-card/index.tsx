@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { firstBadge, secondBadge, thirdBadge } from 'assets';
+import { firstBadge, secondBadge, thirdBadge, Worm } from 'assets';
 import Image from 'next/image';
 
 export interface winners {
@@ -28,7 +28,7 @@ export function WinnerCard({
       <div className="basis-1/3 content-center place-items-center">
         <div className="flex justify-around place-items-center w-[250px] h-[74px] bg-borrowMiddle rounded-[20px]">
           <Image
-            src={firstImage}
+            src={firstImage || "/Worm.svg"}
             height={65}
             width={65}
             alt="first"
@@ -50,7 +50,7 @@ export function WinnerCard({
       <div className="basis-1/3 flex justify-evenly">
         <div className="flex justify-around place-items-center w-[250px] h-[74px] bg-borrowMiddle rounded-[20px]">
           <Image
-            src={secondImage}
+            src={secondImage || "/Worm.svg"}
             height={65}
             width={65}
             alt="second"
@@ -70,7 +70,7 @@ export function WinnerCard({
         </div>
         <div className="flex justify-around place-items-center w-[250px] h-[74px] bg-borrowMiddle rounded-[20px]">
           <Image
-            src={thirdImage}
+            src={thirdImage || "/Worm.svg"}
             height={65}
             width={65}
             alt="third"

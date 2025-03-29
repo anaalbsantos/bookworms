@@ -1,21 +1,21 @@
 import { Response } from 'express';
 
 class CookieRepository {
-  setCookie(res: Response, tokenName: string, token: string) {
-    res.cookie(tokenName, token, {
+  private getCookieOptions(extraOptions = {}) {
+    return {
       httpOnly: true,
       path: '/sessions',
       secure: true,
-    });
+      ...extraOptions,
+    };
+  }
+
+  setCookie(res: Response, tokenName: string, token: string) {
+    res.cookie(tokenName, token, this.getCookieOptions());
   }
 
   clearCookies(res: Response, tokenName: string) {
-    res.cookie(tokenName, '', {
-      httpOnly: true,
-      path: '/sessions',
-      secure: true,
-      maxAge: 0,
-    });
+    res.cookie(tokenName, '', this.getCookieOptions({ maxAge: 0 }));
   }
 }
 

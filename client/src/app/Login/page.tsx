@@ -38,6 +38,7 @@ export default function Login() {
         return;
       }
 
+
       router.push('/Profile');
     } catch (error) {
       console.error('Failed to login');
@@ -102,7 +103,7 @@ export default function Login() {
           <CustomButton variant="borrow" label="Entrar" type="submit" />
           <p className="flex justify-center text-borrow font-nunito font-semibold ">
             Não possui conta?{' '}
-            <a href="/" className="underline">
+            <a href="/Register" className="underline">
               Cadastre-se
             </a>
           </p>

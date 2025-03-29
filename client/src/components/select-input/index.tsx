@@ -1,5 +1,4 @@
-import * as React from "react"
-
+import * as React from "react";
 import {
   Select,
   SelectContent,
@@ -7,25 +6,26 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "../ui/select"
-
+} from "../ui/select";
 
 export interface SelectInputProps {
-  placeholder: string
+  placeholder: string;
   options: string[];
+  onChange: (value: string) => void;
 }
 
 export function SelectInput({
   placeholder,
-  options
+  options,
+  onChange,
 }: SelectInputProps) {
   return (
-    <Select>
+    <Select onValueChange={onChange}>
       <SelectTrigger className="w-[321px] bg-[#F5F5F5] border-color-[#484848] focus:border-transparent focus:ring-0 text-black font-nunito">
-        <SelectValue placeholder={placeholder}/>
+        <SelectValue placeholder={placeholder} />
       </SelectTrigger>
       <SelectContent>
-      <SelectGroup>
+        <SelectGroup>
           {options.map((option) => (
             <SelectItem key={option} value={option}>
               {option}
@@ -34,5 +34,5 @@ export function SelectInput({
         </SelectGroup>
       </SelectContent>
     </Select>
-  )
+  );
 }

@@ -8,9 +8,9 @@ class GroupController {
   async createGroup(req: Request, res: Response): Promise<Response> {
     try {
       const data = {
-        name: req.body.name,
-        duration: req.body.duration,
-        type: req.body.type,
+        name: req.body.groupName,
+        duration: req.body.groupDuration,
+        type: req.body.groupType,
         image: req.file,
       };
 

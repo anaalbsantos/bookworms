@@ -1,14 +1,14 @@
 import React from 'react';
 import Image from 'next/image';
 import { Close } from 'assets';
-import { TextInput } from 'components/text-input'; 
+import { TextInput } from 'components/text-input';
 
 interface ModalProps {
   isOpen: boolean;
   onClose: () => void;
   title: string;
   subtitle?: string;
-  showTextBox?: boolean; 
+  showTextBox?: boolean;
   onConfirm: () => void;
   children?: React.ReactNode;
   confirmText: string;
@@ -29,7 +29,7 @@ const Modal: React.FC<ModalProps> = ({
   const modalHeight = subtitle || showTextBox ? 'h-[323px]' : 'h-[254px]';
 
   return (
-    <div className="fixed inset-0 bg-opacity-50 flex justify-center items-center h-full w-full bg-black">
+    <div className="fixed inset-0 z-50 bg-opacity-50 flex justify-center items-center h-full w-full bg-black">
       <div
         className={`bg-white p-4 rounded-[30px] shadow-lg w-[641px] ${modalHeight} flex-col justify-center`}
       >

@@ -23,10 +23,19 @@ class CommentRepository {
   async findByPostId(postId: string): Promise<Comment[]> {
     const comments = await prisma.comment.findMany({
       where: { postId },
-      orderBy: { createdAt: 'asc' }, // ordena por data de criação do comentário
+      orderBy: { createdAt: 'asc' },
+      include: {
+        author: {
+          select: {
+            name: true,
+            image: true,
+          },
+        },
+      },
     });
     return comments;
   }
+  
 
   // atualizar texto de um comentário:
 

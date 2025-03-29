@@ -17,7 +17,7 @@ export function PaginationComponent() {
         <PaginationItem>
           <PaginationPrevious
             href="#"
-            className="rounded-[20px] bg-gray-200 px-4 py-2 text-gray-600 hover:bg-gray-300 h-[55px] w-[100px] font-nunito font-normal"
+            className="rounded-[20px] bg-[#E4E4E7] px-4 py-2 text-black h-[55px] w-[100px] font-nunito font-normal"
           />
         </PaginationItem>
 
@@ -30,13 +30,13 @@ export function PaginationComponent() {
         </PaginationItem>
 
         <PaginationItem>
-          <PaginationEllipsis className="rounded-[20px] bg-gray-200 px-4 py-2 text-[#484848] h-[55px] w-[52px] font-nunito font-normal" />
+          <PaginationEllipsis className="rounded-[20px] bg-[#E4E4E7] px-4 py-2 text-black h-[55px] w-[52px] font-nunito font-normal" />
         </PaginationItem>
 
         <PaginationItem>
           <PaginationNext
             href="#"
-            className="rounded-[20px] bg-gray-200 px-4 py-2 text-gray-600 hover:bg-gray-300 h-[55px] w-[100px] font-nunito font-normal"
+            className="rounded-[20px] bg-[#E4E4E7] px-4 py-2 text-black h-[55px] w-[100px] font-nunito font-normal"
           />
         </PaginationItem>
       </PaginationContent>

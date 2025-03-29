@@ -39,8 +39,14 @@ class PostRepository {
 
   async findById(postId: string): Promise<Post | null> {
     const post = await prisma.post.findUnique({
-      where: {
-        id: postId,
+      where: { id: postId },
+      include: {
+        author: {
+          select: {
+            name: true,
+            image: true,
+          },
+        },
       },
     });
     return post;

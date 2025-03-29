@@ -15,7 +15,7 @@ class UserController {
         email: req.body.email,
         password: req.body.password,
         bio: req.body.bio,
-        image: req.file
+        image: req.file,
       };
 
       const parsedData = UserDTO.parse(data);
@@ -37,7 +37,7 @@ class UserController {
         email: parsedData.email,
         password: parsedData.password,
         bio: parsedData.bio,
-        image: imageUrl
+        image: imageUrl,
       });
       // console.log('🎉 Usuário criado com sucesso:', newUser);
 
@@ -68,11 +68,10 @@ class UserController {
       }
 
       const data = {
-        name: req.body.name,
-        username: req.body.username,
-        email: req.body.email,
-        password: req.body.password,
-        image: req.file ? req.file : undefined
+        ...req.body,
+        score:
+          req.body.score !== undefined ? Number(req.body.score) : undefined,
+        image: req.file ? req.file : undefined,
       };
 
       const parsedData = updatedUserDTO.parse(data);
@@ -83,24 +82,18 @@ class UserController {
       }
 
       const updatedUser = await UserRepository.update(userId, {
-        name: parsedData.name,
-        username: parsedData.username,
-        email: parsedData.email,
-        password: parsedData.password,
-        bio: parsedData.bio,
-        image: imageUrl
+        ...parsedData,
+        score: parsedData.score ?? currentUser.score,
+        image: imageUrl,
       });
-      if (!updatedUser) {
-        return res.status(404).json({ message: 'Erro ao atualizar usuário' });
-      }
 
       return res.status(200).json({
         message: 'Perfil atualizado com sucesso',
         user: updatedUser,
       });
-
     } catch (error) {
-      res.status(500).json({ error: 'Erro interno no servidor' });
+      console.error('Erro ao atualizar usuário:', error);
+      return res.status(500).json({ error: 'Erro interno no servidor' });
     }
   }
 
