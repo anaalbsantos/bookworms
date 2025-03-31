@@ -16,7 +16,7 @@ interface FormData {
   username: string;
   email: string;
   biography?: string;
-  score?: number; // Campo único que substitui os dois anteriores
+  score?: number;
   image?: File | null | string;
 }
 
@@ -51,7 +51,7 @@ const EditProfilePage = () => {
           username: userData.username,
           email: userData.email,
           biography: userData.bio || '',
-          score: userData.score || 0, // Carrega o score do backend
+          score: userData.score || 0,
           image: userData.image || null
         });
 
@@ -73,6 +73,12 @@ const EditProfilePage = () => {
     fetchUserData();
   }, [session, reset]);
 
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+    }
+  };
+
   const onSubmit = async (data: FormData) => {
     try {
       if (!session?.user?.id) {
@@ -82,18 +88,14 @@ const EditProfilePage = () => {
 
       const formData = new FormData();
 
-      // Campos básicos
       if (data.name) formData.append('name', data.name);
       if (data.username) formData.append('username', data.username);
       if (data.email) formData.append('email', data.email);
       if (data.biography) formData.append('bio', data.biography);
-
-      // Envia o score (usado para ambos "páginas totais" e "páginas lidas")
       if (data.score !== undefined) {
         formData.append('score', data.score.toString());
       }
 
-      // Imagem
       if (data.image instanceof File) {
         formData.append('image', data.image);
       } else if (data.image === null && currentImage) {
@@ -147,7 +149,8 @@ const EditProfilePage = () => {
           </div>
 
           <div className="flex-1 p-8">
-            <form onSubmit={handleSubmit(onSubmit)}>
+            {}
+            <form onSubmit={handleSubmit(onSubmit)} onKeyDown={handleKeyDown}>
               <div className="flex">
                 <div className="w-1/3">
                   <div className="flex flex-col items-center w-full">
@@ -238,13 +241,11 @@ const EditProfilePage = () => {
                         </h3>
                       </div>
 
-                      {/* Área de "Leitura Atual" modificada */}
                       <div className="mt-[340px]">
                         <h3 className="text-xl font-semibold text-borrowDark">
                           Leitura Atual
                         </h3>
                         <div className="mt-9 flex space-x-4">
-                          {/* Ambos os campos mostram e atualizam o mesmo valor (score) */}
                           <TextInput
                             label="Páginas totais"
                             type="number"
