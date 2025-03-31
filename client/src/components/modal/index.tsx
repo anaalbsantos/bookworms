@@ -49,7 +49,7 @@ const Modal: React.FC<ModalProps> = ({
 
         {showTextBox && (
           <div className="mt-4 w-full flex justify-center">
-            <TextInput label="Código do Grupo" type="text" width="w-[556px]" />
+            <TextInput label="Código do Grupo" type="text" data-cy="input-modal" width="w-[556px]" />
           </div>
         )}
 
@@ -64,6 +64,7 @@ const Modal: React.FC<ModalProps> = ({
           <button
             onClick={onConfirm}
             className="px-4 py-2 bg-borrow text-white rounded-[10px] w-[280px] h-[50px]"
+            data-cy="confirmar-modal"
           >
             {confirmText}
           </button>
