@@ -97,6 +97,7 @@ export default function CreateEditPost() {
           headers: { 'Content-Type': 'multipart/form-data' }
         });
         await api.put(`/score/putPost/${user?.groupId}/${user?.id}/${postId}`);
+        router.push(`/PubliDetails?postId=${postId}`);
       } else {
         // Se estiver criando, fazer um POST
         const response = await api.post('/posts/', formData, {
@@ -206,6 +207,7 @@ export default function CreateEditPost() {
                 Cancelar
               </Button>
               <Button
+                data-cy="submit-post"
                 type="submit"
                 className="bg-borrow text-white w-[218px] h-[50px] font-nunito text-[20px] rounded-[10px]"
               >

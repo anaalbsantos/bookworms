@@ -23,7 +23,11 @@ export default function Ranking({ users }: RankingProps) {
       <div className="overflow-y-auto flex flex-col items-center scrollbar-none font-nunito">
         {users &&
           users.map((user) => (
-            <div key={user.id} className="flex items-center p-3">
+            <div
+              key={user.id}
+              data-cy={`ranking-user-${user.id}`}
+              className="flex items-center p-3"
+            >
               <div className="flex items-center w-[256px] space-between gap-20">
                 <div className="flex items-center gap-6">
                   <Image
@@ -34,8 +38,16 @@ export default function Ranking({ users }: RankingProps) {
                     className="w-10 h-10 rounded-full"
                   />
                   <div className="flex flex-col">
-                    <span className="font-bold text-[16px]">{user.name}</span>
-                    <span className="text-gray-600 text-[14px] italic">
+                    <span
+                      data-cy={`ranking-name-${user.name}`}
+                      className="font-bold text-[16px]"
+                    >
+                      {user.name}
+                    </span>
+                    <span
+                      data-cy={`ranking-score-${user.score}`}
+                      className="text-gray-600 text-[14px] italic"
+                    >
                       {user.score} pontos{' '}
                     </span>
                   </div>

@@ -2,7 +2,11 @@
   "compilerOptions": {
     "baseUrl": "./src",
     "target": "es5",
-    "lib": ["dom", "dom.iterable", "esnext"],
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
     "allowJs": true,
     "skipLibCheck": true,
     "strict": true,
@@ -16,8 +20,12 @@
     "isolatedModules": true,
     "jsx": "preserve",
     "paths": {
-      "@mui/styled-engine": ["./node_modules/@mui/styled-engine-sc"],
-      "@/*": ["./src/*"]
+      "@mui/styled-engine": [
+        "./node_modules/@mui/styled-engine-sc"
+      ],
+      "@/*": [
+        "./src/*"
+      ]
     },
     "plugins": [
       {
@@ -30,8 +38,14 @@
     "**/*.ts",
     "**/*.tsx",
     ".next/types/**/*.ts",
-    "tailwind.config.js"
+    "tailwind.config.js",
+    "cypress/support/e2e.js",
+    "cypress/support/commands.js"
   ],
-  "exclude": ["node_modules"],
-  "types": ["@testing-library/jest-dom"]
+  "exclude": [
+    "node_modules"
+  ],
+  "types": [
+    "@testing-library/jest-dom"
+  ]
 }
