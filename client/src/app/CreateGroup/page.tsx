@@ -71,7 +71,7 @@ export default function CreateGroup() {
     const groupCode = input?.value;
 
     try {
-      await api.put(`groups/enter/${groupCode}/${user?.id}`);
+      await api.put(`/groups/enter/${groupCode}/${user?.id}`);
 
       router.push('/Group');
     } catch (error) {
@@ -108,6 +108,7 @@ export default function CreateGroup() {
                 <div className="basis-2/3 flex justify-center">
                   <div className="w-4/5 h-4/5">
                     <TextInput
+                      data-cy="input-nome-grupo"
                       type="text"
                       label="Nome"
                       {...register('name', {
@@ -123,6 +124,7 @@ export default function CreateGroup() {
                   <select
                     {...register('type', { required: 'Campo obrigatório' })}
                     className="bg-transparent border border-gray focus-visible:ring-neutral-400 rounded-lg font-nunito text-borrowDark h-[40px] w-full"
+                    data-cy="roll-input"
                   >
                     <option className="font-nunito" selected>
                       Tipo de jogo
@@ -158,11 +160,13 @@ export default function CreateGroup() {
                       variant="gray"
                       label="Entrar em grupo existente"
                       type="button"
+                      data-cy="entrar-existente"
                       onClick={() => setIsVisible(true)}
                     />
                     <CustomButton
                       variant="borrow"
                       label="Criar grupo"
+                      data-cy="criar-grupo"
                       type="submit"
                       width="w-full m-2"
                     />

@@ -1,12 +1,12 @@
 const { Given, When, Then } = require('cypress-cucumber-preprocessor/steps')
 
 Given("I'm on the front page", () => {
-  cy.visit('http://localhost:3000/Login')
+  cy.visit('https://bookworms-theta.vercel.app/Login')
 })
 
-When("I type the username and the password", () => {
-  cy.get('input[name="emailORusername"]').type('gvnna')
-  cy.get('input[name="password"]').type('123123kk')
+When('I type the username {string} and the password {string}', (user, password) => {
+  cy.get('input[name="emailORusername"]').type(user)
+  cy.get('input[name="password"]').type(password)
   cy.get('button').click()
 })
 

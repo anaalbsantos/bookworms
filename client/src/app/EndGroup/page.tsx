@@ -32,6 +32,7 @@ interface ApiResponse {
   data: User[];
 }
 
+
 export default function EndGroup() {
   const router = useRouter();
   const session = useSession({
@@ -44,6 +45,15 @@ export default function EndGroup() {
   const user = session.data?.user;
 
   const [ranking, setRanking] = useState<rankingUser[]>([]);
+
+  const [group, setGroup] = useState({
+    id: '',
+    name: '',
+    duration: '',
+    type: '',
+    image: '',
+    code: ''
+  });
 
   useEffect(() => {
     const fetchRankingData = async () => {
@@ -64,6 +74,19 @@ export default function EndGroup() {
     }
 
     fetchRankingData();
+  }, [user]);
+
+  useEffect(() => {
+    const fetchGroupData = async () => {
+      try {
+        const res = await api.get(`/groups/${user?.groupId}`);
+        setGroup(res.data);
+      } catch (error) {
+        console.error('Erro ao buscar dados do grupo:', error);
+      }
+    };
+
+    fetchGroupData();
   }, [user]);
 
   const sairGrupo = async () => {
@@ -89,6 +112,14 @@ export default function EndGroup() {
     }
   }
 
+  const handledate = (dateString: string): string => {
+    const newDate = new Date(dateString);
+    const day = newDate.getDate();
+    const month = newDate.toLocaleString('pt-BR', { month: 'long' });
+    const year = newDate.getFullYear();
+    return `Até ${day} de ${month} de ${year}`;
+  };
+
 
   return (
     <Layout>
@@ -96,10 +127,11 @@ export default function EndGroup() {
         <div className="flex flex-col basis-2/3 justify-items-center items-center">
           <div className="w-[600px] h-[200px]">
             <GroupCover
-              name="Livrados"
-              date=" "
-              type="PAGES"
-              image="https://res.cloudinary.com/dzi0uoyed/image/upload/v1742004406/dlhyyzviwlgwevwe7ls3.png"
+              name={group.name}
+              date={handledate(group.duration)}
+              type={group.type}
+              image={group.image}
+              code={group.code}
             />
           </div>
           <div className="w-[25px] h-[25px]"></div>
@@ -112,12 +144,12 @@ export default function EndGroup() {
             thirdImage={ranking[2]?.image ?? ""}
           />
           <div className="flex flex-row p-4 justify-around items-center">
-            <CustomButton variant="gray" label="Sair de grupo" type="button" onClick={sairGrupo} />
-            <CustomButton variant="borrow" label="Resetar grupo" type="button" width="w-full m-4" onClick={resetarGrupo} />
+            <CustomButton variant="gray" label="Sair de grupo" data-cy="botao-sair" type="button" onClick={sairGrupo} />
+            <CustomButton variant="borrow" label="Resetar grupo" data-cy="botao-resetar" type="button" width="w-full m-4" onClick={resetarGrupo} />
           </div>
         </div>
         <div className="flex flex-row basis-1/3">
-          <div className="h-5/6 w-5/6 bg-black">
+          <div className="h-5/6 w-5/6">
             <Ranking users={ranking} />
           </div>
         </div>
