@@ -8,6 +8,7 @@ import Ranking from 'components/ranking';
 import PageTitle from 'components/title';
 import Image from 'next/image';
 import api from 'services/api';
+import { Edit3, Trash3 } from 'assets';
 
 interface User {
   id: string;
@@ -160,6 +161,20 @@ export default function PubliDetails() {
     fetchRankingData();
   }, [group.id, user?.groupId]);
 
+  const handleDeletePost = async () => {
+    if (!postId) return;
+    try {
+      await api.delete(`/posts/${postId}`);
+      router.push('/Group');
+    } catch (error) {
+      console.error('Erro ao deletar post:', error);
+    }
+  };
+
+  const handleEditPost = () => {
+    router.push(`/CreateEditPost?postId=${postId}`);
+  };
+
   return (
     <Layout>
       <div className="flex flex-row">
@@ -186,18 +201,36 @@ export default function PubliDetails() {
               <div className="flex flex-col">
                 <div className="flex flex-col w-[352px] border-2 border-[#E4E4E7] rounded-[20px] shadow-md overflow-hidden">
                   {}
-
-                  <div className="p-4">
-                    <h2 className="text-[#49423C] font-nunito font-bold text-[16px]">
+                  <div className=" flex p-4 items-center justify-between">
+                    <div className="flex items-center">
+                      <Image
+                      src={postData.author.image  || '/default-avatar.png'}  
+                      alt="author"
+                      width={50} 
+                      height={51} 
+                      className=" w-[50px] h-[51px] rounded-full mr-3 ml-2"  
+                    />
+                    <p className="text-[#484848] font-nunito font-black text-[20px]">
+                      {postData.author.name}
+                    </p>
+                    </div>
+                    <div className="flex gap-1">
+                    <button onClick={handleDeletePost} className=" bg-gray-200 rounded-full">
+                      <Image src={Trash3} alt="Deletar" width={24} height={24} />
+                    </button> 
+                    <button onClick={handleEditPost} className=" bg-gray-200 rounded-full">
+                      <Image src={Edit3} alt="Editar" width={32} height={32} />
+                    </button>
+                    </div>
+                  </div>
+                  <div className="flex items-start justify-between pl-6 pr-4 gap-4">
+                    <h2 className="text-[#49423C] font-nunito font-bold text-[16px] max-w-[302px] w-full break-words">
                       {postData.title}
                     </h2>
-                    <p className="text-[#484848] font-nunito font-light text-[14px]">
-                      by {postData.author.name}
-                    </p>
                   </div>
-
+                    
                   {}
-                  <div className="relative w-full">{postData.body}</div>
+                  <div className="pl-6 relative max-w-[350px] w-full break-words font-nunito font-light text-graphiteGray">{postData.body}</div>
 
                   {}
                   <div className="pt-7 pb-2 pr-2">

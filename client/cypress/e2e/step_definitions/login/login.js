@@ -1,15 +1,37 @@
-const { Given, When, Then } = require('cypress-cucumber-preprocessor/steps')
+import { Given, When, Then } from 'cypress-cucumber-preprocessor/steps';
 
-Given("I'm on the front page", () => {
-  cy.visit('https://bookworms-theta.vercel.app/Login')
-})
+Given('O usuário está na página de login', () => {
+  cy.visit('http://localhost:3000/Login');
+});
 
-When('I type the username {string} and the password {string}', (user, password) => {
-  cy.get('input[name="emailORusername"]').type(user)
-  cy.get('input[name="password"]').type(password)
-  cy.get('button').click()
-})
+When(
+  'O usuário digita seu username {string} e sua senha {string}',
+  (username, senha) => {
+    cy.get('input[name="emailORusername"]').type(username);
+    cy.get('input[name="password"]').type(senha);
+  }
+);
 
-Then("I should see the bookworms logo", () => {
-  cy.get('img[alt="WormBig"]').should('exist');
-})
+When(
+  'O usuário digita seu email {string} e sua senha {string}',
+  (email, senha) => {
+    cy.get('input[name="emailORusername"]').type(email);
+    cy.get('input[name="password"]').type(senha);
+  }
+);
+
+When('O usuário seleciona a opção de login', () => {
+  cy.get('button').click();
+});
+
+Then('O usuário deve ser redirecionado para {string}', (page) => {
+  cy.url().should('include', page);
+});
+
+Then('O usuário continua na página {string}', (page) => {
+  cy.url().should('include', page);
+});
+
+Then('O usuário recebe a mensagem de erro {string}', (msg) => {
+  cy.get(`[data-cy="error-message"]`).should('contain', msg);
+});

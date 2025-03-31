@@ -15,7 +15,7 @@ export function GroupCover({ name, date, type, image, code }: GroupCoverProps) {
       <div className="relative w-full h-[120px]">
         <Image src={image} alt="group-cover" layout="fill" objectFit="cover" />
       </div>
-      <div className="ml-6 mt-3">
+      <div className="ml-6 mt-3 mb-3">
         <h1 className="text-[#49423C] font-extrabold text-xl font-nunito">
           {name}
         </h1>

@@ -38,7 +38,6 @@ export default function Login() {
         return;
       }
 
-
       router.push('/Profile');
     } catch (error) {
       console.error('Failed to login');
@@ -96,7 +95,10 @@ export default function Login() {
             }
           />
           {error && (
-            <p className="flex justify-center w-full text-red-500 font-nunito font-semibold text-sm">
+            <p
+              data-cy="error-message"
+              className="flex justify-center w-full text-red-500 font-nunito font-semibold text-sm"
+            >
               ⚠︎ {error}
             </p>
           )}

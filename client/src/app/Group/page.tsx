@@ -14,7 +14,7 @@ import { Close, Books } from 'assets';
 import Image from 'next/image';
 import Ranking from 'components/ranking';
 import api from 'services/api';
-import { ScrollArea, ScrollBar } from 'components/ui/scroll-area';
+import { ScrollArea } from 'components/ui/scroll-area';
 
 interface Post {
   id: string;
@@ -221,6 +221,7 @@ export default function Group() {
       <div className="flex flex-row p-10 justify-around">
         <div className="flex flex-col">
           <GroupCover
+            data-cy="group-cover"
             name={group.name}
             date={handledate(group.duration)}
             type={group.type}
@@ -231,19 +232,22 @@ export default function Group() {
           <div className="flex flex-row gap-[100px] mt-8">
             <div className="w-[321px] gap-4 flex flex-col">
               <PaginationComponent />
-              <SelectInput
-                placeholder={'Filtrar por usuário'}
-                options={groupUsers.map((user) => user.name)}
-                onChange={(selectedUserName) => {
-                  console.log('Nome selecionado:', selectedUserName);
-                  const selectedUser = groupUsers.find(
-                    (user) => user.name === selectedUserName
-                  );
-                  setSelectedUser(selectedUser ? selectedUser.id : null);
-                  console.log('Usuário encontrado:', selectedUser);
-                }}
-              />
+              <div data-testid="filter">
+                <SelectInput
+                  placeholder={'Filtrar por usuário'}
+                  options={groupUsers.map((user) => user.name)}
+                  onChange={(selectedUserName) => {
+                    console.log('Nome selecionado:', selectedUserName);
+                    const selectedUser = groupUsers.find(
+                      (user) => user.name === selectedUserName
+                    );
+                    setSelectedUser(selectedUser ? selectedUser.id : null);
+                    console.log('Usuário encontrado:', selectedUser);
+                  }}
+                />
+              </div>
               <CustomButton
+                data-cy="add-post"
                 label={'+ Adicionar publicação'}
                 variant={'dark'}
                 onClick={() => router.push('/CreateEditPost')}
@@ -257,9 +261,10 @@ export default function Group() {
 
             {/* <div className="flex flex-col overflow-auto scrollbar-none gap-2"> */}
             <ScrollArea className="h-[500px] w-full">
-              <div className="flex flex-col gap-2">
+              <div data-testid="posts-container" className="flex flex-col gap-2">
                 {posts.map((post) => (
                   <PostCard
+                    data-cy="post-card"
                     key={post.id}
                     postText={post.title}
                     author={post.author?.name || 'Unknown Author'}
@@ -276,7 +281,7 @@ export default function Group() {
             {/* </div> */}
           </div>
         </div>
-        <div>
+        <div data-testid="ranking">
           <Ranking users={ranking} />
         </div>
       </div>
